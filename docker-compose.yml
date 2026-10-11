@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - mongodb
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    ports:
+      - "3004:3004"
+    depends_on:
+      - mongodb
+
+  tts-service:
+    build:
+      context: ./services/tts-service
+    ports:
+      - "3003:3003"
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
