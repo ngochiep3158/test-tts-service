@@ -1,20 +1,13 @@
-# Sử dụng môi trường Node.js
-FROM node:20-alpine
-
-# Tạo thư mục làm việc bên trong container
+# Giai đoạn 1: Build code Java bằng Maven
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy 2 file package.json và package-lock.json vào trước
-COPY package*.json ./
-
-# Cài đặt các thư viện (dependencies)
-RUN npm install
-
-# Copy toàn bộ code vào
-COPY . .
-
-# Build code NestJS
-RUN npm run build
-
-# Lệnh chạy ứng dụng khi container khởi động
-CMD ["npm", "run", "start:prod"]
+# Giai đoạn 2: Chạy file .jar
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 3003
+ENTRYPOINT ["java", "-jar", "app.jar"]

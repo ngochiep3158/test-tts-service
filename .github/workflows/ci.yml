@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
-        # Khai báo các service cần tự động test tại đây
+        # List the services to test automatically here
         service: [api-gateway, auth-service, tts-service] 
 
     steps:

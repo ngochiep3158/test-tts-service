@@ -25,6 +25,20 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## TTS API
+
+The gateway forwards text-to-speech requests to `tts-service`:
+
+```http
+POST /api/tts/convert
+Content-Type: application/json
+
+{"text":"Xin chào","lang":"vi"}
+```
+
+`TTS_SERVICE_URL` configures the TTS service base URL. It defaults to
+`http://localhost:3003`; Docker Compose sets it to `http://tts-service:3003`.
+
 ## Project setup
 
 ```bash
